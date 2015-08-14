@@ -3,5 +3,6 @@ include/
 lib/
 .DS_STORE
 .Python
-.py[cod]
+*.py[cod]
 pip-selfcheck.json
+
