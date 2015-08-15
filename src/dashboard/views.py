@@ -2,8 +2,23 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import View
 from django.views.generic.base import TemplateView, TemplateResponseMixin, ContextMixin
+from django.views.generic.detail import DetailView
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
+
+
+from .models import Book
+
+
+# def book_detail(request, slug):
+# 	book = Book.objects.get(slug=slug)
+# 	return render()
+
+
+class BookDetail(DetailView):
+	model = Book
+
+
 
 
 class LoginRequiredMixin(object):
