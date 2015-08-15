@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.generic import View
 from django.views.generic.base import TemplateView, TemplateResponseMixin, ContextMixin
 from django.views.generic.detail import DetailView
@@ -31,6 +31,28 @@ from .models import Book
 # 	return render()
 
 
+class MultipleObjectMixin(object):
+	def get_object(self, queryset=None, *args, **kwargs):
+		slug = self.kwargs.get("slug")
+		if slug:
+			try:
+				obj = self.model.objects.get(slug=slug)
+			except self.model.MultipleObjectsReturned:
+				obj = self.get_queryset().first()
+			except:
+				raise Http404
+			return obj
+		raise Http404
+
+
+class BookDeleteView(DeleteView):
+	model = Book
+
+	def get_success_url(self):
+		return reverse("book_list")
+
+
+
 class BookCreateView(CreateView):
 	template_name = "forms.html"
 	form_class = BookForm
@@ -44,14 +66,16 @@ class BookCreateView(CreateView):
 		return reverse("book_list")
 
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(MultipleObjectMixin, UpdateView):
 	model = Book
 	#fields = ["title", "description"]
 	form_class = BookForm
 	template_name = "forms.html"
 
-class BookDetail(DetailView):
+
+class BookDetail(MultipleObjectMixin, DetailView):
 	model = Book
+
 
 class BookListView(ListView):
 	model = Book

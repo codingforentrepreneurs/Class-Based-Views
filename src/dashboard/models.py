@@ -14,12 +14,13 @@ class Book(models.Model):
 	last_edited_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,  related_name='book_edit')
 	title = models.CharField(max_length=120)
 	description = models.TextField(null=True, blank=True)
-	slug = models.SlugField()
+	slug = models.SlugField(unique=True)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 
 	class Meta:
 		ordering = ["-timestamp", "-updated"]
+		#unique_together = ("title", "slug")
 
 	def __unicode__(self):
 		return self.title
