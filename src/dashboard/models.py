@@ -18,6 +18,8 @@ class Book(models.Model):
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 
+	class Meta:
+		ordering = ["-timestamp", "-updated"]
 
 	def __unicode__(self):
 		return self.title

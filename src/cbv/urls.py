@@ -5,15 +5,16 @@ from django.contrib import admin
 
 from django.views.generic.base import TemplateView
 
-from dashboard.views import DashboardTemplateView, MyView, BookDetail
+from dashboard.views import DashboardTemplateView, MyView, BookDetail, BookListView, BookCreateView
 
 urlpatterns = [
     # Examples:
     url(r'^$', 'newsletter.views.home', name='home'),
     url(r'^contact/$', 'newsletter.views.contact', name='contact'),
     #url(r'^about/$', 'cbv.views.about', name='about'),
-    
-    url(r'^book/(?P<slug>[-\w]+)$', BookDetail.as_view(), name='book_detail'),
+    url(r'^book/create/$', BookCreateView.as_view(), name='book_create'),
+    url(r'^book/$', BookListView.as_view(), name='book_list'),
+    url(r'^book/(?P<slug>[-\w]+)/$', BookDetail.as_view(), name='book_detail'),
     url(r'^someview/$', MyView.as_view(template_name='about.html'), name='someview'),
     url(r'^about/$', DashboardTemplateView.as_view(), name='about'),
     url(r'^team/$', DashboardTemplateView.as_view(template_name='team.html'), name='team'),

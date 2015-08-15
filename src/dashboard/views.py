@@ -1,13 +1,29 @@
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.views.generic import View
 from django.views.generic.base import TemplateView, TemplateResponseMixin, ContextMixin
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 
 
+from .forms import BookForm
 from .models import Book
+
+
+#CREATE
+
+#RETREIVE
+
+#UPDATE
+
+#DELETE
+
+
+
 
 
 # def book_detail(request, slug):
@@ -15,8 +31,27 @@ from .models import Book
 # 	return render()
 
 
+class BookCreateView(CreateView):
+	template_name = "forms.html"
+	form_class = BookForm
+	#success_url = "/"
+	def form_valid(self, form):
+		form.instance.added_by = self.request.user
+		#form.instance.last_edited_by = self.request.user
+		return super(BookCreateView, self).form_valid(form)
+
+	def get_success_url(self):
+		return reverse("book_list")
+
+
 class BookDetail(DetailView):
 	model = Book
+
+class BookListView(ListView):
+	model = Book
+	# def get_queryset(self, *args, **kwargs):
+	# 	qs = super(BookListView, self).get_queryset(*args, **kwargs)
+	# 	return qs
 
 
 
