@@ -5,7 +5,9 @@ from django.contrib import admin
 
 from django.views.generic.base import TemplateView
 
-from dashboard.views import DashboardTemplateView, MyView, BookDetail, BookListView, BookCreateView
+from dashboard.views import DashboardTemplateView, MyView,\
+							 BookDetail, BookListView, BookCreateView,\
+							 BookUpdateView
 
 urlpatterns = [
     # Examples:
@@ -15,6 +17,7 @@ urlpatterns = [
     url(r'^book/create/$', BookCreateView.as_view(), name='book_create'),
     url(r'^book/$', BookListView.as_view(), name='book_list'),
     url(r'^book/(?P<slug>[-\w]+)/$', BookDetail.as_view(), name='book_detail'),
+     url(r'^book/(?P<slug>[-\w]+)/update/$', BookUpdateView.as_view(), name='book_update'),
     url(r'^someview/$', MyView.as_view(template_name='about.html'), name='someview'),
     url(r'^about/$', DashboardTemplateView.as_view(), name='about'),
     url(r'^team/$', DashboardTemplateView.as_view(template_name='team.html'), name='team'),

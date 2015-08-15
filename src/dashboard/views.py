@@ -44,6 +44,12 @@ class BookCreateView(CreateView):
 		return reverse("book_list")
 
 
+class BookUpdateView(UpdateView):
+	model = Book
+	#fields = ["title", "description"]
+	form_class = BookForm
+	template_name = "forms.html"
+
 class BookDetail(DetailView):
 	model = Book
 
