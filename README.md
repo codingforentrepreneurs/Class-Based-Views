@@ -13,7 +13,7 @@ Become a member on [Coding for Entrepreneurs](http://joincfe.com/enroll)
 The tutorial code below is the final code from the end of each tutorial video. Each link below is tied directly to the tutorial's title. Please note that some videos may not have code reference code.
 
 ## Tutorial Code
-*Coming soon*
+
 [3 - Intro & TemplateView](../../tree/a3e8ce790930e802c26f1a38c13c57708db8d6f1)
 
 [4 - Customize TemplateView](../../tree/5618ab2b0c529a7e5260733837df47de89abaf59)
