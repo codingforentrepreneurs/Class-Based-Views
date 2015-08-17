@@ -7,7 +7,7 @@ from django.views.generic import View
 from django.views.generic.base import TemplateView, TemplateResponseMixin, ContextMixin
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, ModelFormMixin
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 
@@ -85,8 +85,29 @@ class BookUpdateView(MultipleObjectMixin, UpdateView):
 	template_name = "forms.html"
 
 
-class BookDetail(MultipleObjectMixin, DetailView):
+class BookDetail(SuccessMessageMixin, ModelFormMixin, MultipleObjectMixin, DetailView):
 	model = Book
+	form_class = BookForm
+	success_message = "%(title)s has been updated."
+
+	def get_context_data(self, *args, **kwargs):
+		context = super(BookDetail, self).get_context_data(*args, **kwargs)
+		context["form"] = self.get_form()
+		context["btn_title"] = "Update Book"
+		return context
+
+	def post(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			self.object = self.get_object()
+			form = self.get_form()
+			if form.is_valid():
+				return self.form_valid(form)
+			else:
+				return self.form_invalid(form)
+
+	def get_success_url(self):
+		return reverse("book_list")
+
 
 	# def dispatch(self, request, *args, **kwargs):
 	# 	messages.success(self.request, "Book viewed!")
