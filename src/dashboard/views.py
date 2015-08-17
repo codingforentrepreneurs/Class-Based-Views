@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
@@ -53,17 +55,27 @@ class BookDeleteView(DeleteView):
 
 
 
-class BookCreateView(CreateView):
+class BookCreateView(SuccessMessageMixin, CreateView):
 	template_name = "forms.html"
 	form_class = BookForm
+	success_message = "%(title)s has been created at %(created_at)s"
 	#success_url = "/"
 	def form_valid(self, form):
 		form.instance.added_by = self.request.user
 		#form.instance.last_edited_by = self.request.user
-		return super(BookCreateView, self).form_valid(form)
+		valid_form = super(BookCreateView, self).form_valid(form)
+		#messages.success(self.request, "Book created!")
+		# send signals
+		return valid_form
 
 	def get_success_url(self):
 		return reverse("book_list")
+
+	def get_success_message(self, cleaned_data):
+		return self.success_message % dict(
+			cleaned_data,
+			created_at=self.object.timestamp,
+		)
 
 
 class BookUpdateView(MultipleObjectMixin, UpdateView):
@@ -75,6 +87,10 @@ class BookUpdateView(MultipleObjectMixin, UpdateView):
 
 class BookDetail(MultipleObjectMixin, DetailView):
 	model = Book
+
+	# def dispatch(self, request, *args, **kwargs):
+	# 	messages.success(self.request, "Book viewed!")
+	# 	return super(BookDetail, self).dispatch(request, *args, **kwargs)
 
 
 class BookListView(ListView):
