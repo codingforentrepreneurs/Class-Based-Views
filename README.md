@@ -1,5 +1,6 @@
-Class Based Views - Django
-=========
+![Class Based Views Logo](https://cfe-static.s3.amazonaws.com/media/class-based-views/images/django_class_based_views_unleashed.png)
+
+# Class Based Views - Django
 
 Class Based Views (CBVs) are an important aspect of making Django work better for you. This tutorial series helps you understand how to use class based views in a pre-existing project. 
 
